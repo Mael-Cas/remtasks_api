@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 7000
 
 # Commande pour démarrer votre application
-CMD ["npm", "start"]
+CMD ["npm", "serveur.js"]
