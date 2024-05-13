@@ -168,6 +168,33 @@ app.get('/users/tasks/:userId', async (req, res) => {
     }
 });
 
+// Route pour ajouter un jour à la deadline d'une tâche
+app.put('/tasks/:taskId/deadline', async (req, res) => {
+    try {
+        const { taskId } = req.params;
+        const task = await Task.findById(taskId);
+        if (!task) {
+            return res.status(404).json({ msg: "Tâche non trouvée" });
+        }
+
+        // Ajout d'un jour à la deadline
+        const currentDeadline = new Date(task.deadline);
+        currentDeadline.setDate(currentDeadline.getDate() + 1);
+
+        // Formater la nouvelle deadline en format ISO
+        const newDeadlineISO = currentDeadline.toISOString();
+
+        // Mettre à jour la deadline de la tâche dans la base de données
+        await Task.findByIdAndUpdate(taskId, { deadline: newDeadlineISO });
+
+        res.json({ msg: "Date limite de la tâche prolongée avec succès" });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ msg: "Erreur lors de la prolongation de la date limite de la tâche" });
+    }
+});
+
+
 app.listen(PORT, () => {
     console.log(`http://localhost:${PORT}`);
 });
