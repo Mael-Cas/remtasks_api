@@ -7,7 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 7000;
 
 // Connexion à la base de données MongoDB avec Mongoose
-mongoose.connect(`mongodb://127.0.0.1:27017/myapp`);
+mongoose.connect(`mongodb://${process.env.DB_HOST}:27017/myapp`);
 
 // Modèle Task
 
